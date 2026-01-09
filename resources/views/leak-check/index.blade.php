@@ -257,75 +257,83 @@
 </div>
 
 <!-- Request Form Modal -->
-<div id="request-modal" class="fixed inset-0 z-[110] hidden flex items-center justify-center px-4 transition-all duration-500 mt-5" style="margin-top: 80px;">
-    <div class="absolute inset-0 bg-[#020617]/40 backdrop-blur-[8px] animate-in fade-in duration-500"></div>
-    <div class="relative w-full max-w-xl bg-[#111827]/90 backdrop-blur-2xl rounded-[2.5rem] border border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.8)] overflow-hidden animate-in fade-in zoom-in duration-300">
-        <div class="p-8 lg:p-12">
-            <div class="mb-10 text-center">
-                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/10 text-emerald-500 mb-6">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+<div id="request-modal" class="relative z-[110] hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <!-- Background backdrop -->
+    <div class="fixed inset-0 bg-[#020617]/60 backdrop-blur-[8px] transition-opacity animate-in fade-in duration-500"></div>
+
+    <!-- Scrollable container -->
+    <div class="fixed inset-0 z-[110] overflow-y-auto">
+        <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-6">
+            <!-- Modal panel -->
+            <div class="relative w-full max-w-xl transform overflow-hidden bg-[#111827]/90 backdrop-blur-2xl rounded-[2.5rem] border border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.8)] text-left transition-all animate-in zoom-in duration-300" style="margin-top: 120px;">
+                <div class="p-8 lg:p-12">
+                    <div class="mb-10 text-center">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/10 text-emerald-500 mb-6">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-black heading-font text-white mb-2">Formulir Pengajuan Data</h3>
+                        <p class="text-slate-400 text-sm">Berikan alasan kuat untuk mendapatkan izin akses data intelijen.</p>
+                    </div>
+
+                    <form id="request-data-form" class="space-y-5">
+                        @csrf
+                        <input type="hidden" name="query" id="request-query-val">
+                        <input type="hidden" name="log_id" id="request-log-id">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Nama Lengkap</label>
+                                <input type="text" name="full_name" required value="{{ auth()->user()->detail->full_name ?? auth()->user()->username }}"
+                                       class="w-full px-5 py-4 rounded-xl border border-white/10 bg-white/5 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-white font-medium"
+                                       placeholder="Nama sesuai identitas..." readonly>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Email Aktif</label>
+                                <input type="email" name="email" required value="{{ auth()->user()->email }}"
+                                       class="w-full px-5 py-4 rounded-xl border border-white/10 bg-white/5 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-white font-medium"
+                                       placeholder="email@instansi.com" readonly>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Nomor Telepon / WA</label>
+                                <input type="text" name="phone_number" required
+                                       class="w-full px-5 py-4 rounded-xl border border-white/10 bg-white/5 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-white font-medium"
+                                       placeholder="+62 812...">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Status Pemohon</label>
+                                <input type="text" name="requester_status" required
+                                       class="w-full px-5 py-4 rounded-xl border border-white/10 bg-white/5 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-white font-medium"
+                                       placeholder="Staff IT, Mahasiswa, Peneliti, dll...">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Departemen / Instansi (Opsional)</label>
+                            <input type="text" name="department"
+                                   class="w-full px-5 py-4 rounded-xl border border-white/10 bg-white/5 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-white font-medium"
+                                   placeholder="Cyber Security Dev, BIN, Universitas, dll...">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Alasan Pengajuan</label>
+                            <textarea name="reason" required rows="3"
+                                      class="w-full px-5 py-4 rounded-xl border border-white/10 bg-white/5 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-white font-medium italic"
+                                      placeholder="Jelaskan mengapa Anda membutuhkan data ini... (Min. 10 karakter)"></textarea>
+                        </div>
+
+                        <div class="pt-4 flex items-center space-x-4">
+                            <button type="button" onclick="closeModal('request-modal')" class="flex-1 py-4 text-slate-400 font-bold text-xs uppercase tracking-widest hover:text-white transition-colors">Batal</button>
+                            <button type="submit" id="request-submit-btn"
+                                    class="flex-[2] py-4 bg-emerald-500 text-[#0a0f18] rounded-xl font-black text-xs uppercase tracking-[0.2em] hover:bg-white transition-all shadow-xl shadow-emerald-500/20 active:scale-[0.98]">
+                                Kirim Permohonan
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <h3 class="text-2xl font-black heading-font text-white mb-2">Formulir Pengajuan Data</h3>
-                <p class="text-slate-400 text-sm">Berikan alasan kuat untuk mendapatkan izin akses data intelijen.</p>
             </div>
-
-            <form id="request-data-form" class="space-y-5">
-                @csrf
-                <input type="hidden" name="query" id="request-query-val">
-                <input type="hidden" name="log_id" id="request-log-id">
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Nama Lengkap</label>
-                        <input type="text" name="full_name" required value="{{ auth()->user()->detail->full_name ?? auth()->user()->username }}"
-                               class="w-full px-5 py-4 rounded-xl border border-white/10 bg-white/5 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-white font-medium"
-                               placeholder="Nama sesuai identitas..." readonly>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Email Aktif</label>
-                        <input type="email" name="email" required value="{{ auth()->user()->email }}"
-                               class="w-full px-5 py-4 rounded-xl border border-white/10 bg-white/5 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-white font-medium"
-                               placeholder="email@instansi.com" readonly>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Nomor Telepon / WA</label>
-                        <input type="text" name="phone_number" required
-                               class="w-full px-5 py-4 rounded-xl border border-white/10 bg-white/5 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-white font-medium"
-                               placeholder="+62 812...">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Status Pemohon</label>
-                        <input type="text" name="requester_status" required
-                               class="w-full px-5 py-4 rounded-xl border border-white/10 bg-white/5 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-white font-medium"
-                               placeholder="Staff IT, Mahasiswa, Peneliti, dll...">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Departemen / Instansi (Opsional)</label>
-                    <input type="text" name="department"
-                           class="w-full px-5 py-4 rounded-xl border border-white/10 bg-white/5 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-white font-medium"
-                           placeholder="Cyber Security Dev, BIN, Universitas, dll...">
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Alasan Pengajuan</label>
-                    <textarea name="reason" required rows="3"
-                              class="w-full px-5 py-4 rounded-xl border border-white/10 bg-white/5 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-white font-medium italic"
-                              placeholder="Jelaskan mengapa Anda membutuhkan data ini... (Min. 10 karakter)"></textarea>
-                </div>
-
-                <div class="pt-4 flex items-center space-x-4">
-                    <button type="button" onclick="closeModal('request-modal')" class="flex-1 py-4 text-slate-400 font-bold text-xs uppercase tracking-widest hover:text-white transition-colors">Batal</button>
-                    <button type="submit" id="request-submit-btn"
-                            class="flex-[2] py-4 bg-emerald-500 text-[#0a0f18] rounded-xl font-black text-xs uppercase tracking-[0.2em] hover:bg-white transition-all shadow-xl shadow-emerald-500/20 active:scale-[0.98]">
-                        Kirim Permohonan
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
 </div>

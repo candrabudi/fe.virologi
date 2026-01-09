@@ -25,15 +25,34 @@ class LeakCheckController extends Controller
 
         // Sanitize input to prevent XSS/Injection
         $query = strip_tags(trim($request->input('query')));
-        $token = config('services.leakosint.token');
-        $url = config('services.leakosint.url');
+
+        // Fetch settings from Database
+        $setting = \App\Models\LeakCheckSetting::getActive();
+
+        if (!$setting->is_enabled) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Layanan pemindaian kebocoran data saat ini dinonaktifkan oleh administrator.'
+            ], 503);
+        }
+
+        $token = $setting->api_token;
+        // Basic validation if token is missing
+        if (empty($token)) {
+             return response()->json([
+                'success' => false,
+                'message' => 'Konfigurasi API Token belum diatur. Hubungi administrator.'
+            ], 500);
+        }
+
+        $url = rtrim($setting->api_endpoint, '/'); 
 
         try {
             $response = Http::post($url, [
                 'token' => $token,
                 'request' => $query,
-                'limit' => 100,
-                'lang' => 'en',
+                'limit' => $setting->default_limit,
+                'lang' => $setting->lang,
                 'type' => 'json'
             ]);
 
@@ -190,11 +209,23 @@ class LeakCheckController extends Controller
         ]);
 
         try {
+            // Verify ownership of the log to prevent IDOR
+            $log = LeakCheckLog::where('id', $request->input('log_id'))
+                ->where('user_id', Auth::id())
+                ->first();
+
+            if (!$log) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data log tidak ditemukan atau Anda tidak memiliki akses.'
+                ], 403);
+            }
+
             // Eloquent's built-in parameter binding prevents SQL Injection.
             // We also sanitize inputs to prevent cross-site scripting (XSS) or other malicious payload storage.
             LeakDataRequest::create([
                 'user_id' => Auth::id(),
-                'leak_check_log_id' => (int) $request->input('log_id'), // Explicit casting
+                'leak_check_log_id' => $log->id,
                 'query' => strip_tags(trim($request->input('query'))),
                 'full_name' => strip_tags(trim($request->input('full_name'))),
                 'email' => filter_var(trim($request->input('email')), FILTER_SANITIZE_EMAIL),
