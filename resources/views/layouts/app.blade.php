@@ -36,10 +36,20 @@
     <!-- JSON-LD Structured Data -->
     @yield('json_ld')
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Resource Hints for Speed -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Orbitron:wght@400..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    </noscript>
 
     <!-- Styles & Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -154,9 +164,100 @@
 
         [data-aos] { pointer-events: none; }
         .aos-animate { pointer-events: auto; }
+
+        /* Global Toast Notifications */
+        #toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .toast-item {
+            min-width: 320px;
+            max-width: 450px;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: white;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            pointer-events: auto;
+            animation: toastSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .toast-item.exit {
+            animation: toastSlideOut 0.3s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+        }
+
+        .toast-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+        }
+
+        .toast-success .toast-icon { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .toast-error .toast-icon { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .toast-warning .toast-icon { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .toast-info .toast-icon { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+
+        .toast-content {
+            flex-grow: 1;
+        }
+
+        .toast-title {
+            font-size: 0.875rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .toast-message {
+            font-size: 0.8125rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+        }
+
+        @keyframes toastSlideIn {
+            from { opacity: 0; transform: translateX(100%) scale(0.9); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        @keyframes toastSlideOut {
+            from { opacity: 1; transform: translateX(0) scale(1); }
+            to { opacity: 0; transform: translateX(100%) scale(0.9); }
+        }
+
+        @media (max-width: 640px) {
+            #toast-container {
+                top: auto;
+                bottom: 24px;
+                right: 16px;
+                left: 16px;
+            }
+            .toast-item {
+                min-width: 0;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-sky-200 selection:text-sky-900 overflow-x-hidden min-h-screen flex flex-col bg-slate-50 text-slate-900 relative">
+    <div id="toast-container"></div>
     @if($website_settings?->custom_body_scripts)
     {!! $website_settings->custom_body_scripts !!}
     @endif
@@ -282,6 +383,72 @@
             init();
             animate();
         })();
+
+        // Global Toast Component
+        function toast(type, message, title = '') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const item = document.createElement('div');
+            item.className = `toast-item toast-${type}`;
+            
+            const icons = {
+                success: 'ri-checkbox-circle-fill',
+                error: 'ri-error-warning-fill',
+                warning: 'ri-alert-fill',
+                info: 'ri-information-fill'
+            };
+
+            const titles = {
+                success: 'Success',
+                error: 'Security Alert',
+                warning: 'Warning',
+                info: 'Information'
+            };
+
+            // 1. Icon
+            const iconDiv = document.createElement('div');
+            iconDiv.className = 'toast-icon';
+            iconDiv.innerHTML = `<i class="${icons[type]}"></i>`;
+
+            // 2. Content
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'toast-content';
+
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'toast-title';
+            titleDiv.textContent = title || titles[type];
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'toast-message';
+            messageDiv.textContent = message;
+
+            contentDiv.appendChild(titleDiv);
+            contentDiv.appendChild(messageDiv);
+
+            // 3. Close Button
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'text-white/20 hover:text-white transition-colors';
+            closeBtn.innerHTML = '<i class="ri-close-line"></i>';
+            closeBtn.onclick = function() {
+                item.classList.add('exit');
+                setTimeout(() => item.remove(), 300);
+            };
+
+            // Assemble
+            item.appendChild(iconDiv);
+            item.appendChild(contentDiv);
+            item.appendChild(closeBtn);
+
+            container.appendChild(item);
+
+            setTimeout(() => {
+                if (item.parentElement) {
+                    item.classList.add('exit');
+                    setTimeout(() => item.remove(), 300);
+                }
+            }, 5000);
+        }
     </script>
 </body>
 </html>

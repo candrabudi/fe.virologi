@@ -1,6 +1,6 @@
 <header class="navbar-container">
     <nav class="navbar-main">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 md:h-20">
                 
                 <a href="/" class="flex items-center z-50">
@@ -11,34 +11,34 @@
                     @endif
                 </a>
 
-                <div class="hidden lg:flex items-center space-x-8">
-                    <a href="{{ url('/') }}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 transition-colors uppercase tracking-widest">Beranda</a>
-                    <a href="{{ route('about') }}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 transition-colors uppercase tracking-widest">Tentang</a>
-                    <a href="{{ route('services.index') }}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 transition-colors uppercase tracking-widest">Layanan</a>
-                    <a href="{{ route('ebooks.index') }}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 transition-colors uppercase tracking-widest">E-Book</a>
-                    <a href="{{ route('products.index') }}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 transition-colors uppercase tracking-widest">Produk</a>
-                    <a href="{{ route('blog.index') }}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 transition-colors uppercase tracking-widest">Artikel</a>
-                    <a href="{{ route('contact') }}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 transition-colors uppercase tracking-widest">Kontak</a>
+                <div class="hidden lg:flex items-center space-x-10">
+                    <a href="{{ url('/') }}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 transition-colors uppercase tracking-wider">Beranda</a>
+                    <a href="{{ route('about') }}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 transition-colors uppercase tracking-wider">Tentang</a>
+                    <a href="{{ route('services.index') }}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 transition-colors uppercase tracking-wider">Layanan</a>
+                    <a href="{{ route('ebooks.index') }}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 transition-colors uppercase tracking-wider">E-Book</a>
+                    <a href="{{ route('products.index') }}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 transition-colors uppercase tracking-wider">Produk</a>
+                    <a href="{{ route('blog.index') }}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 transition-colors uppercase tracking-wider">Artikel</a>
+                    <a href="{{ route('contact') }}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 transition-colors uppercase tracking-wider">Kontak</a>
                     
                     @auth
-                        <a href="{{ route('leak-check.index') }}" class="text-sm font-bold text-red-400 hover:text-red-500 transition-colors uppercase tracking-widest flex items-center">
+                        <a href="{{ route('leak-check.index') }}" class="text-sm font-bold text-red-400 hover:text-red-500 transition-colors uppercase tracking-wider flex items-center">
                             <span class="relative flex h-2 w-2 mr-2">
                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                                 <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                             </span>
                             Leak Check
                         </a>
+                        <a href="{{ route('dashboard') }}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 transition-colors uppercase tracking-wider pl-4 ml-4 border-l border-white/10">Dashboard</a>
                         <div class="flex items-center space-x-2 pl-4 border-l border-white/10 group">
                             <a href="{{ route('profile.index') }}" class="flex items-center space-x-3 group">
                                 <img src="{{ auth()->user()->detail->avatar_url }}" class="w-8 h-8 rounded-lg border border-white/20 group-hover:border-cyan-400 transition-colors">
-                                <span class="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors uppercase tracking-widest">{{ auth()->user()->username }}</span>
+                                <span class="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors uppercase tracking-wider">{{ auth()->user()->username }}</span>
                             </a>
                             <a href="{{ route('logout') }}" class="p-2 text-slate-400 hover:text-red-400 transition-colors" title="Logout">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4-4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                             </a>
                         </div>
                     @else
-                        <a href="{{ route('register') }}" class="text-sm font-bold text-slate-400 hover:text-white transition-colors uppercase tracking-widest">Register</a>
                         <a href="{{ route('login') }}" class="px-6 py-2.5 bg-cyan-500 text-slate-900 text-sm font-bold rounded-xl hover:bg-white hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all transform hover:-translate-y-0.5 uppercase tracking-widest shadow-lg shadow-cyan-500/20">Login Portal</a>
                     @endauth
                 </div>
@@ -85,7 +85,6 @@
                         $menuItems[] = ['label' => 'Logout', 'url' => route('logout')];
                     } else {
                         $menuItems[] = ['label' => 'Login', 'url' => route('login')];
-                        $menuItems[] = ['label' => 'Register', 'url' => route('register')];
                     }
                 @endphp
 

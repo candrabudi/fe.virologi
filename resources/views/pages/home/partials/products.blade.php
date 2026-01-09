@@ -22,7 +22,7 @@
             <template x-for="product in products" :key="product.id">
                 <a :href="'/products/' + product.slug" class="flex-none w-[280px] lg:w-[320px] group snap-start" data-aos="fade-up">
                     <div class="relative aspect-square rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden bg-slate-50 mb-6 border border-slate-100/50 shadow-sm transition-all duration-700 group-hover:shadow-xl">
-                        <img :src="product.thumbnail || (product.primary_image ? product.primary_image.image_path : '')" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+                        <img :src="product.thumbnail || (product.primary_image ? product.primary_image.image_path : '')" :alt="product.name" loading="lazy" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
                         <div class="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur border border-slate-100 rounded-lg text-[9px] font-bold uppercase tracking-widest text-slate-900" x-text="product.ai_domain.replace('_', ' ')"></div>
                     </div>
                     <h3 class="text-lg lg:text-xl font-bold text-slate-900 mb-2 heading-font group-hover:text-sky-500 transition-colors" x-text="product.name"></h3>

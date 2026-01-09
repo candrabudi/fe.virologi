@@ -180,7 +180,7 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Izin keamanan diberikan. Selamat datang kembali, ' . $user->username,
-            'redirect' => url('/')
+            'redirect' => route('dashboard')
         ]);
     }
 

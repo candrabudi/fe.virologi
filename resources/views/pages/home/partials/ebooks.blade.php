@@ -46,7 +46,7 @@
                         <a :href="'/ebooks/' + ebooks[0].slug" class="block">
                             <!-- Image Container -->
                             <div class="glossy-card relative aspect-[3/4] rounded-[2.5rem] overflow-hidden mb-8 transition-all duration-700 hover:shadow-2xl hover:scale-[1.02] border border-slate-100 group-hover:border-sky-200">
-                                <img :src="ebooks[0].cover_image" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                                <img :src="ebooks[0].cover_image" :alt="ebooks[0].title" loading="lazy" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
                                 <!-- Badge inside image -->
                                 <div class="absolute top-6 left-6 px-3 py-1 bg-white/90 backdrop-blur-md text-sky-600 border border-sky-100 rounded-lg text-[9px] font-bold uppercase tracking-widest shadow-sm">Latest Release</div>
                             </div>
@@ -72,7 +72,7 @@
                                 <a :href="'/ebooks/' + ebook.slug" class="block">
                                     <div class="glossy-card relative aspect-[3/4] rounded-[2rem] overflow-hidden mb-6 transition-all duration-500 hover:-translate-y-2 hover:shadow-lg">
                                         <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 mix-blend-overlay"></div>
-                                        <img :src="ebook.cover_image" class="w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700">
+                                        <img :src="ebook.cover_image" :alt="ebook.title" loading="lazy" class="w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700">
                                     </div>
                                     <div class="px-2">
                                         <div class="text-[9px] font-bold text-sky-600 uppercase tracking-widest mb-2" x-text="ebook.topic.replace('_', ' ')"></div>

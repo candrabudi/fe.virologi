@@ -26,7 +26,7 @@
                 <a :href="'/blog/' + articles[0].slug" class="block glossy-card rounded-[2.5rem] p-8 lg:p-10 transition-all duration-700 hover:shadow-[0_20px_60px_rgba(14,165,233,0.15)] group cursor-pointer">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                         <div class="relative aspect-[16/10] rounded-2xl overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-700 border border-white/50">
-                            <img :src="articles[0].thumbnail" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+                            <img :src="articles[0].thumbnail" :alt="articles[0].title" loading="lazy" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/0 to-transparent"></div>
                             <div class="absolute bottom-6 left-6 px-4 py-2 bg-white/10 backdrop-blur-md rounded-lg border border-white/20 text-white text-[10px] font-bold uppercase tracking-widest">Featured Analysis</div>
                         </div>
@@ -56,7 +56,7 @@
                 <div class="snap-center flex-none w-[85vw] sm:w-[380px] lg:w-auto h-full group cursor-pointer" data-aos="fade-up" :data-aos-delay="index * 100">
                     <a :href="'/blog/' + post.slug" class="block glossy-card rounded-3xl p-6 h-full hover:shadow-lg transition-all duration-500 hover:-translate-y-2 flex flex-col">
                         <div class="relative aspect-[4/3] rounded-2xl overflow-hidden mb-8 border border-white/50 grayscale group-hover:grayscale-0 transition-all duration-700 bg-slate-100">
-                            <img :src="post.thumbnail" class="w-full h-full object-cover">
+                            <img :src="post.thumbnail" :alt="post.title" loading="lazy" class="w-full h-full object-cover">
                         </div>
                         <div class="text-[9px] font-bold text-sky-600 uppercase tracking-[0.3em] mb-4 bg-sky-50/50 inline-block px-3 py-1 rounded-full border border-sky-100 self-start" x-text="post.categories[0]?.name || 'Insight'"></div>
                         <h4 class="text-xl font-bold text-slate-900 mb-6 heading-font leading-snug transition-colors group-hover:text-sky-600 flex-grow" x-text="post.title.length > 30 ? post.title.substring(0, 30) + '...' : post.title"></h4>

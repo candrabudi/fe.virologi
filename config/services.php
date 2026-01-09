@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'leakosint' => [
+        'token' => env('LEAK_OSINT_TOKEN'),
+        'url' => env('LEAK_OSINT_URL', 'https://leakosintapi.com/'),
+    ],
+
 ];

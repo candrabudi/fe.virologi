@@ -44,7 +44,7 @@
                 <!-- Buttons -->
                 <div class="flex flex-col sm:flex-row items-center gap-4 lg:gap-5 justify-center lg:justify-start">
                     <template x-if="hero.primary_button_text">
-                        <a :href="hero.primary_button_url" class="group relative px-8 py-3.5 lg:py-4 bg-cyan-500 text-[#020617] rounded-xl font-bold text-sm tracking-widest overflow-hidden shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] hover:-translate-y-1 transition-all w-full sm:w-auto text-center order-1">
+                        <a :href="hero.primary_button_url" class="group relative px-6 py-2.5 lg:py-3 bg-cyan-500 text-[#020617] rounded-xl font-bold text-xs tracking-widest overflow-hidden shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] hover:-translate-y-1 transition-all w-full sm:w-auto text-center order-1">
                             <div class="absolute inset-0 w-full h-full bg-white/20 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
                             <span class="relative z-10 flex items-center justify-center gap-2">
                                 <span x-text="hero.primary_button_text"></span>
@@ -54,7 +54,7 @@
                     </template>
 
                     <!-- Leak Check Button -->
-                    <a href="{{ route('leak-check.index') }}" class="group relative px-8 py-3.5 lg:py-4 bg-emerald-500 text-[#020617] rounded-xl font-bold text-sm tracking-widest overflow-hidden shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] hover:-translate-y-1 transition-all w-full sm:w-auto text-center order-2">
+                    <a href="{{ route('leak-check.index') }}" class="group relative px-6 py-2.5 lg:py-3 bg-emerald-500 text-[#020617] rounded-xl font-bold text-xs tracking-widest overflow-hidden shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] hover:-translate-y-1 transition-all w-full sm:w-auto text-center order-2">
                         <div class="absolute inset-0 w-full h-full bg-white/20 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
                         <span class="relative z-10 flex items-center justify-center gap-2">
                             <span>Periksa Kebocoran</span>
@@ -63,7 +63,7 @@
                     </a>
                     
                     <template x-if="hero.secondary_button_text">
-                        <a :href="hero.secondary_button_url" class="group px-8 py-3.5 lg:py-4 bg-slate-900/50 border border-slate-700 text-slate-300 rounded-xl font-bold text-sm tracking-widest hover:border-cyan-500/50 hover:text-cyan-400 hover:bg-slate-900/80 transition-all w-full sm:w-auto text-center backdrop-blur-sm flex items-center justify-center gap-2 order-3">
+                        <a :href="hero.secondary_button_url" class="group px-6 py-2.5 lg:py-3 bg-slate-900/50 border border-slate-700 text-slate-300 rounded-xl font-bold text-xs tracking-widest hover:border-cyan-500/50 hover:text-cyan-400 hover:bg-slate-900/80 transition-all w-full sm:w-auto text-center backdrop-blur-sm flex items-center justify-center gap-2 order-3">
                             <span class="w-2 h-2 rounded-full bg-slate-600 group-hover:bg-cyan-500 transition-colors shadow-[0_0_10px_rgba(6,182,212,0.5)]"></span>
                             <span x-text="hero.secondary_button_text"></span>
                         </a>

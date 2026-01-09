@@ -25,8 +25,8 @@ class LeakCheckController extends Controller
 
         // Sanitize input to prevent XSS/Injection
         $query = strip_tags(trim($request->input('query')));
-        $token = '1370987771:HZ2qdd0g';
-        $url = env('LEAK_OSINT_URL', 'https://leakosintapi.com/');
+        $token = config('services.leakosint.token');
+        $url = config('services.leakosint.url');
 
         try {
             $response = Http::post($url, [
@@ -51,7 +51,7 @@ class LeakCheckController extends Controller
 
                 return response()->json([
                     'success' => false,
-                    'message' => 'Kesalahan API: ' . $data['Error code']
+                    'message' => 'Layanan pemindaian sedang mengalami gangguan teknis. Tim kami telah diberitahu. Silakan coba beberapa saat lagi.'
                 ], 400);
             }
 
@@ -171,7 +171,7 @@ class LeakCheckController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Kesalahan Koneksi: ' . $e->getMessage()
+                'message' => 'Gagal menghubungkan ke server intelijen. Silakan periksa koneksi Anda atau coba lagi nanti.'
             ], 500);
         }
     }

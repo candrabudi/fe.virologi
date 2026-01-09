@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LeakCheckController;
-
+use App\Http\Controllers\AttackSimulationController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AgentAiController;
 Route::get('/', function () {
     return view('home');
 });
@@ -98,4 +100,24 @@ Route::middleware('auth')->group(function () {
     
     // Rate Limit: 20 per minute (Prevents log flooding)
     Route::get('/leak-check/logs', [LeakCheckController::class, 'getLogs'])->middleware('throttle:20,1')->name('leak-check.logs');
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::prefix('ai-agent')->group(function () {
+        Route::get('/chat', [AgentAiController::class, 'index'])->name('ai.chat');
+        Route::get('/sessions', [AgentAiController::class, 'sessions']);
+        Route::post('/sessions', [AgentAiController::class, 'createSession']);
+        Route::get('/sessions/{token}', [AgentAiController::class, 'messages']);
+        Route::post('/sessions/{token}/message', [AgentAiController::class, 'storeMessage']);
+        Route::get('/chat/{token}', [AgentAiController::class, 'index'])->name('ai.chat.detail');
+        Route::post('/sessions/{token}/pin', [AgentAiController::class, 'togglePin']);
+        Route::delete('/sessions/{token}', [AgentAiController::class, 'deleteSession']);
+        Route::post('/sessions/{token}/feedback', [AgentAiController::class, 'submitFeedback']);
+        Route::post('/sessions/{token}/correction', [AgentAiController::class, 'submitCorrection']);
+    });
+
+    // Cyber Attack Simulation (Moved inside auth for security)
+    Route::get('/threat-map', [AttackSimulationController::class, 'index'])->name('threat-map');
+    Route::get('/attack/nodes', [AttackSimulationController::class, 'nodes']);
+    Route::get('/attack/fire', [AttackSimulationController::class, 'fire']);
 });

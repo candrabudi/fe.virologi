@@ -583,7 +583,7 @@
                 clearInterval(interval);
                 scanningOverlay.classList.add('hidden');
                 scanningOverlay.classList.remove('flex');
-                alert(error.response?.data?.message || 'Pemindaian terinterupsi. Gagal koneksi.');
+                toast('error', error.response?.data?.message || 'Pemindaian terinterupsi. Gagal koneksi.');
                 loadLogs();
             });
     });
@@ -602,14 +602,14 @@
         axios.post('{{ route('leak-check.request') }}', data)
             .then(response => {
                 if (response.data.success) {
-                    alert(response.data.message);
+                    toast('success', response.data.message, 'Request Submitted');
                     closeModal('request-modal');
                 }
             })
             .catch(error => {
                 submitBtn.disabled = false;
                 submitBtn.innerText = 'Kirim Permohonan';
-                alert(error.response?.data?.message || 'Gagal mengirim permohonan.');
+                toast('error', error.response?.data?.message || 'Gagal mengirim permohonan.');
             });
     });
 </script>

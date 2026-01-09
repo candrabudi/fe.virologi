@@ -17,18 +17,9 @@ class DatabaseSeeder extends Seeder
     {
         // Homepage & Auth Seeders
         $this->call([
-            UserSeeder::class,
-            PartnerSeeder::class,
-            WebsiteSettingSeeder::class,
-            FooterSeeder::class,
-            HomeSectionSeeder::class,
-            PageSeeder::class,
-            EbookSeeder::class,
-            ArticleSeeder::class,
-            ProductSeeder::class,
-            CyberSecurityServiceSeeder::class,
-            ContactSettingSeeder::class,
-            AboutSettingSeeder::class,
+            AiKnowledgeBaseSeeder::class,
+            AiTrainingDataSeeder::class,
+            AiMentorshipSeeder::class,
         ]);
     }
 }
