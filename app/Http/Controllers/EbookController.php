@@ -20,4 +20,13 @@ class EbookController extends Controller
 
         return view('ebooks.show', compact('ebook'));
     }
+
+    public function read($slug)
+    {
+        $ebook = Ebook::where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        return view('ebooks.read', compact('ebook'));
+    }
 }
