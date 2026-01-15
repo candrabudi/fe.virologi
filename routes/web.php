@@ -163,7 +163,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // Cyber Attack Simulation (Moved inside auth for security)
-    Route::get('/threat-map', [AttackSimulationController::class, 'index'])->name('threat-map');
-    Route::get('/attack/nodes', [AttackSimulationController::class, 'nodes']);
-    Route::get('/attack/fire', [AttackSimulationController::class, 'fire']);
 });
+Route::get('/threat-map', [AttackSimulationController::class, 'index'])->name('threat-map');
+Route::get('/attack/nodes', [AttackSimulationController::class, 'nodes']);
+Route::get('/attack/fire', [AttackSimulationController::class, 'fire']);
