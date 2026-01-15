@@ -282,7 +282,7 @@
             categories: [],
             recentPosts: [],
             pagination: {},
-            selectedCategory: new URLSearchParams(window.location.search).get('category'),
+            selectedCategory: '{{ $categorySlug ?? request()->query("category") }}' || null,
             searchQuery: '',
             
             async init() {
@@ -346,10 +346,20 @@
                     };
 
                     // Update URL for UX
+                    // For the category page, we might want to keep the URL as is unless the user clicks "All Insights"
+                    // If the user clicks "All Insights", they should go back to main blog
+                    if (this.selectedCategory === null) {
+                         // Logic to redirect if "All" is clicked can be handled here or just let the API fetch all.
+                         // However, if we are on a specific category page, 'selectedCategory' is init with that category
+                    }
+                    
+                    // Simple URL param updating just in case
                     const url = new URL(window.location);
                     if (this.selectedCategory) url.searchParams.set('category', this.selectedCategory);
                     else url.searchParams.delete('category');
-                    window.history.pushState({}, '', url);
+                    // We don't want to mess up the pretty URL /blog/category/foo 
+                    // so we only do pushState if we are not on the category route, OR we just accept the query param behavior for client-side filtering changes
+                    // window.history.pushState({}, '', url); 
 
                 } catch (e) {
                     console.error('Failed to fetch articles', e);
@@ -362,12 +372,17 @@
             },
 
             setCategory(slug) {
-                this.selectedCategory = slug;
+                if(slug === null) {
+                   // Redirect to main blog if "All" is selected, as per typical pattern or just fetch all
+                   window.location.href = '/blog';
+                   return;
+                }
+                // Navigate to the category page
+                window.location.href = '/blog/category/' + slug;
             },
 
             resetFilters() {
-                this.selectedCategory = null;
-                this.searchQuery = '';
+                window.location.href = '/blog';
             },
 
             nextPage() {

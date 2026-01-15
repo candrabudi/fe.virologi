@@ -11,9 +11,9 @@ class BlogController extends Controller
         return view('blog.index');
     }
 
-    public function category($slug)
+    public function category($category)
     {
-        return view('blog.index', ['categorySlug' => $slug]);
+        return view('blog.category', ['categorySlug' => $category]);
     }
 
     public function show($slug)

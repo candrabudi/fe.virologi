@@ -12,7 +12,7 @@ Route::get('/', function () {
 });
 
 Route::get('/blog', [App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/category/{slug}', [App\Http\Controllers\BlogController::class, 'category'])->name('blog.category');
+Route::get('/blog/category/{category}', [App\Http\Controllers\BlogController::class, 'category'])->name('blog.category');
 Route::get('/blog/{slug}', [App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 Route::get('/ebooks', [App\Http\Controllers\EbookController::class, 'index'])->name('ebooks.index');
 Route::get('/ebooks/{slug}', [App\Http\Controllers\EbookController::class, 'show'])->name('ebooks.show');
