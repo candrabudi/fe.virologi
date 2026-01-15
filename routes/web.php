@@ -12,6 +12,7 @@ Route::get('/', function () {
 });
 
 Route::get('/blog', [App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/category/{slug}', [App\Http\Controllers\BlogController::class, 'category'])->name('blog.category');
 Route::get('/blog/{slug}', [App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 Route::get('/ebooks', [App\Http\Controllers\EbookController::class, 'index'])->name('ebooks.index');
 Route::get('/ebooks/{slug}', [App\Http\Controllers\EbookController::class, 'show'])->name('ebooks.show');
@@ -20,25 +21,33 @@ Route::get('/pdf-proxy', function (Illuminate\Http\Request $request) {
     $url = $request->query('url');
     if (!$url) abort(404);
     
-    // Intelligent Local Resolution: If URL points to this app, serve as local file for Range support (Speed)
-    $currentHost = request()->getSchemeAndHttpHost();
-    if (strpos($url, $currentHost) === 0) {
-        $relativePath = str_replace($currentHost . '/', '', $url);
-        // Try public path
-        $localPath = public_path($relativePath);
-        if (file_exists($localPath)) return response()->file($localPath);
-        
-        // Try storage path logic (assuming default storage link structure)
-        if (strpos($relativePath, 'storage/') === 0) {
-            $storageReal = storage_path('app/public/' . str_replace('storage/', '', $relativePath));
-            if (file_exists($storageReal)) return response()->file($storageReal);
+    // 1. Aggressive Local Resolution (Speed Optimization)
+    // We try to find the file locally even if it has a full URL (ignoring domain/protocol mismatches)
+    
+    // Clean URL to get the path
+    $pathStr = $url;
+    if (filter_var($url, FILTER_VALIDATE_URL)) {
+        $parsed = parse_url($url);
+        $pathStr = $parsed['path'] ?? '';
+    }
+    
+    // Candidates for local paths
+    $candidates = [
+        public_path($pathStr), // Direct public path
+        public_path(urldecode($pathStr)), // Decoded public path
+        storage_path('app/public/' . str_replace(['/storage/', 'storage/'], '', $pathStr)), // Standard storage path
+        storage_path('app/public/' . str_replace(['/storage/', 'storage/'], '', urldecode($pathStr))),
+    ];
+
+    foreach ($candidates as $candidate) {
+        // Ensure we don't accidentally serve / (root) or directories
+        if (file_exists($candidate) && !is_dir($candidate)) {
+            return response()->file($candidate);
         }
     }
 
+    // 2. Remote Fallback (Slower, No Range Support)
     if (filter_var($url, FILTER_VALIDATE_URL)) {
-        // Remote URL Proxy
-        // We use a stream but ideally we'd implement Range Proxy here.
-        // For now, streaming is the fallback.
         return response()->stream(function () use ($url) {
             if ($stream = fopen($url, 'rb')) {
                 fpassthru($stream);
@@ -48,14 +57,8 @@ Route::get('/pdf-proxy', function (Illuminate\Http\Request $request) {
             'Content-Type' => 'application/pdf',
             'X-Frame-Options' => 'SAMEORIGIN',
         ]);
-    } else {
-        // Local path fallback (e.g. 'ebooks/file.pdf')
-        $path = public_path($url);
-        if (file_exists($path)) return response()->file($path);
-        
-        $storagePath = storage_path('app/public/' . str_replace('storage/', '', $url));
-        if (file_exists($storagePath)) return response()->file($storagePath);
     }
+
     abort(404);
 })->name('pdf-proxy');
 

@@ -11,6 +11,11 @@ class BlogController extends Controller
         return view('blog.index');
     }
 
+    public function category($slug)
+    {
+        return view('blog.index', ['categorySlug' => $slug]);
+    }
+
     public function show($slug)
     {
         $post = \App\Models\Article::where('slug', $slug)

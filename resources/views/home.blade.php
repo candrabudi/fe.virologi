@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
 @section('meta_title', 'Home')
-@section('meta_description', 'Advanced Research in Virology, Bioinformatics, and Cybersecurity. Protecting global health and digital infrastructure through AI-driven intelligence.')
-@section('meta_keywords', 'biosecurity, pathogen research, cybersecurity ai, viral evolution analysis, bioinformatics indonesia')
+@section('meta_description', 'Advanced Research in Virology, Bioinformatics, and Cybersecurity. Protecting global health
+    and digital infrastructure through AI-driven intelligence.')
+@section('meta_keywords', 'biosecurity, pathogen research, cybersecurity ai, viral evolution analysis, bioinformatics
+    indonesia')
 
 @section('content')
     <div x-data="homeData">
-        
+
         <!-- Hero Section Wrapper -->
         <div class="bg-slate-950" style="z-index: -9999">
             @include('pages.home.partials.hero')
@@ -45,7 +47,7 @@
 
                         if (data) {
                             this.hero = data.hero || {};
-                            
+
                             // Convert sections array to object keyed by section_key for easy access in view
                             this.sections = (data.sections || []).reduce((acc, section) => {
                                 acc[section.section_key] = section;

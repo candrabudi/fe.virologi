@@ -328,7 +328,7 @@
                     disableRange: false, // Enable Range Requests for fast partial loading!
                     disableStream: false,
                     disableAutoFetch: true, // Only fetch what is needed
-                    rangeChunkSize: 65536*2 // 128KB chunks
+                    rangeChunkSize: 65536 // 64KB chunks for snappy mobile load use
                 });
 
                 loadingTask.onProgress = (p) => {

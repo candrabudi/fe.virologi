@@ -282,7 +282,7 @@
             categories: [],
             recentPosts: [],
             pagination: {},
-            selectedCategory: new URLSearchParams(window.location.search).get('category'),
+            selectedCategory: '{{ $categorySlug ?? request()->query("category") }}' || null,
             searchQuery: '',
             
             async init() {
