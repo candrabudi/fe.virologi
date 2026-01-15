@@ -18,12 +18,12 @@
         <div class="relative overflow-hidden bg-slate-50">
             <!-- Home Page Sections -->
             <div class="relative z-10">
+                @include('pages.home.partials.blog')
                 @include('pages.home.partials.ebooks')
                 @include('pages.home.partials.products')
                 @include('pages.home.partials.services')
                 @include('pages.home.partials.threat_map')
                 @include('pages.home.partials.enterprise')
-                @include('pages.home.partials.blog')
             </div>
         </div>
     </div>
