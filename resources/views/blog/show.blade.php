@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('meta_title', ($post->seo_title ?? $post->title) . ' | RD-VIROLOGI Intelligence')
+@section('meta_title', ($post->seo_title ?? $post->title) . ' | VIROLOGI Intelligence')
 @section('meta_description', $post->seo_description ?? Str::limit(strip_tags($post->content), 160))
 @section('meta_keywords', $post->seo_keywords ?? ($post->categories->pluck('name')->join(', ') . ', virology research, pathogen analysis'))
 
@@ -71,11 +71,11 @@
                 <div class="flex flex-wrap items-center gap-6 sm:gap-10 pt-6" data-aos="fade-up" data-aos-delay="200">
                     <div class="flex items-center space-x-4">
                         <div class="w-12 h-12 rounded-2xl bg-slate-950 flex items-center justify-center text-white font-bold text-lg shadow-xl shadow-slate-200">
-                            R
+                            V
                         </div>
                         <div class="text-left">
                             <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-bold">Organization</span>
-                            <span class="text-slate-950 font-black">RD-VIROLOGI</span>
+                            <span class="text-slate-950 font-black">VIROLOGI</span>
                         </div>
                     </div>
                     
@@ -107,7 +107,7 @@
 
                     <!-- Technical Content -->
                     <article class="max-w-none text-left space-y-10" data-aos="fade-up">
-                        <div class="article-content space-y-8 text-black text-lg leading-relaxed font-bold" x-html="post.content"></div>
+                        <div class="article-content space-y-8 text-black text-sm leading-relaxed font-normal" x-html="post.content"></div>
 
                         <!-- Tags / Shared -->
                         <div class="pt-16 border-t border-slate-100">
