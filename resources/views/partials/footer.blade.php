@@ -126,7 +126,7 @@
                 <ul class="space-y-3 text-slate-400 text-sm font-medium">
                     @forelse($footer_categories as $category)
                     <li>
-                        <a href="/blog/category/{{ $category->slug }}" class="hover:text-sky-400 transition-colors inline-flex items-center group">
+                        <a href="/blog?category={{ $category->slug }}" class="hover:text-sky-400 transition-colors inline-flex items-center group">
                             <span class="group-hover:translate-x-1 transition-transform">{{ $category->name }}</span>
                         </a>
                     </li>
